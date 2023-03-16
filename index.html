@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>QR Code Generator</title>
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-family: sans-serif;
+      }
+      label {
+        margin-top: 20px;
+      }
+      input[type="text"] {
+        padding: 10px;
+        margin-left: 10px;
+        width: 200px;
+      }
+      button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #0069d9;
+        border: none;
+        color: white;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      #qr-code {
+        margin-top: 20px;
+      }
+      #save-button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #28a745;
+        border: none;
+        color: white;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Generate a QR Code</h1>
+    <form>
+      <label for="message">WhatsApp Message:</label>
+      <input type="text" id="message" name="message" />
+      <button type="button" onclick="generateQR()">Generate</button>
+    </form>
+    <div id="qr-code"></div>
+    <a id="download-link" href="#" download="qr-code.png">
+      <button id="save-button">Save QR Code</button>
+    </a>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+      function generateQR() {
+        const message = document.getElementById("message").value;
+        const qrCodeDiv = document.getElementById("qr-code");
+        const qrCode = new QRCode(qrCodeDiv, {
+          text: `https://wa.me/919873062228?text=${message}`,
+          width: 300,
+          height: 300,
+          colorDark: "#0069d9",
+          colorLight: "#ffffff",
+          correctLevel: QRCode.CorrectLevel.H,
+        });
+        const brandingImage =
+          "https://imgur.com/oknfQTz";
+        const canvas = qrCodeDiv.querySelector("canvas");
+        const ctx = canvas.getContext("2d");
+        const img = new Image();
+        img.src = brandingImage;
+        img.onload = () => {
+          ctx.drawImage(img, 90, 90, 120, 120);
+          const link = document.getElementById("download-link");
+          link.href = canvas.toDataURL("image/png");
+          link.style.display = "block";
+        };
+      }
+    </script>
+  </body>
+</html>
